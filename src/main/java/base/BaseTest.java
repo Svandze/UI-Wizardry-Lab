@@ -3,53 +3,43 @@ package base;
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.reporter.ExtentHtmlReporter;
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
-import org.testng.ITestResult;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.AfterSuite;
-import org.testng.annotations.BeforeMethod;
-import core.DriverManager;
-import org.testng.annotations.BeforeSuite;
 
-import java.io.IOException;
+import core.DriverManager;
+
 
 public class BaseTest {
     protected static ExtentReports extent;
     protected ExtentTest test;
     protected WebDriver driver;
 
-    @BeforeSuite
+    @BeforeClass
     public void setUp() {
         extent = new ExtentReports();
         ExtentHtmlReporter htmlReporter = new ExtentHtmlReporter("target/extent-reports/report.html");
         extent.attachReporter(htmlReporter);
     }
 
-    @AfterSuite
+    @AfterClass
     public void tearDown() {
         extent.flush();
     }
 
-    @BeforeMethod
+    @Before
     public void beforeMethod() {
         test = extent.createTest(getClass().getSimpleName());
         driver = DriverManager.getDriver();
     }
 
-    @AfterMethod
-    public void afterMethod(ITestResult result) throws IOException {
+    @After
+    public void afterMethod() {
         if (driver != null) {
-            if (result.getStatus() == ITestResult.FAILURE) {
-                String screenshotPath = takeScreenshot();
-                test.fail(result.getThrowable());
-                test.addScreenCaptureFromPath(screenshotPath);
-            } else if (result.getStatus() == ITestResult.SUCCESS) {
-                test.pass("Test passed");
-            } else if (result.getStatus() == ITestResult.SKIP) {
-                test.skip("Test skipped");
-            }
             driver.quit();
         }
     }
