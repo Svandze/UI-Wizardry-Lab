@@ -31,6 +31,12 @@ public class ConfigManager {
     private static void createDirectories(String packageName) throws IOException {
         String[] packageParts = packageName.split("\\.");
         String path = "src/test/java";
+
+        File rootDirectory = new File(path);
+        if (!rootDirectory.exists()) {
+            rootDirectory.mkdirs();
+        }
+
         for (String part : packageParts) {
             path += "/" + part;
             File directory = new File(path);
