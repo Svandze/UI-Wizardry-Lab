@@ -6,7 +6,7 @@
 
     <groupId>org.example</groupId>
     <artifactId>framework</artifactId>
-    <version>1.1-Create-directories+Test+Surefire</version>
+    <version>1.1-TestingHeadlessOnEdge</version>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
