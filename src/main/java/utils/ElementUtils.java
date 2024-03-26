@@ -17,11 +17,10 @@ public class ElementUtils {
 
     public ElementUtils(WebDriver driver) {
         this.driver = driver;
-        this.wait = new WebDriverWait(driver, Duration.ofSeconds(4));
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(2));
+        this.wait = new WebDriverWait(driver, Duration.ofSeconds(3));
     }
 
-    public void click(WebElement element) {
+    public void waitAndClick(WebElement element) {
         try {
             wait.until(ExpectedConditions.elementToBeClickable(element)).click();
         } catch (TimeoutException e) {
@@ -29,7 +28,7 @@ public class ElementUtils {
         }
     }
 
-    public void sendKeys(WebElement element, String text) {
+    public void waitAndSendKeys(WebElement element, String text) {
         try {
             WebElement webElement = wait.until(ExpectedConditions.visibilityOf(element));
             webElement.clear();
@@ -39,12 +38,12 @@ public class ElementUtils {
         }
     }
 
-    public WebElement findBy(By locator) {
+    public WebElement waitAndFindBy(By locator) {
         WebElement element = null;
         for (int i = 0; i < 3; i++) { // Intentar hasta 3 veces (incluyendo el primer intento)
             try {
                 element = wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
-                break; // Si se encuentra el elemento, salir del bucle
+                break; // Sí se encuentra el elemento, salir del bucle
             } catch (TimeoutException e) {
                 log.info("Elemento no encontrado en el intento " + (i + 1));
                 if (i == 2) { // Si es el último intento, lanza una excepción
@@ -54,4 +53,6 @@ public class ElementUtils {
         }
         return element;
     }
+
+
 }
