@@ -1,5 +1,6 @@
 package utils;
 
+import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.TimeoutException;
@@ -9,7 +10,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
-
+@Slf4j
 public class ElementUtils {
     private WebDriver driver;
     private WebDriverWait wait;
@@ -45,7 +46,7 @@ public class ElementUtils {
                 element = wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
                 break; // Si se encuentra el elemento, salir del bucle
             } catch (TimeoutException e) {
-                System.out.println("Elemento no encontrado en el intento " + (i + 1));
+                log.info("Elemento no encontrado en el intento " + (i + 1));
                 if (i == 2) { // Si es el último intento, lanza una excepción
                     throw new NoSuchElementException("Elemento no encontrado después de varios intentos: " + locator.toString());
                 }
