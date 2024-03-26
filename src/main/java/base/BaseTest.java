@@ -1,5 +1,6 @@
 package base;
 
+import core.CustomPageFactory;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -23,6 +24,7 @@ public class BaseTest {
     @Before
     public void beforeMethod() {
         driver = DriverManager.getDriver();
+        CustomPageFactory.initElements(driver,this);
     }
 
     @After

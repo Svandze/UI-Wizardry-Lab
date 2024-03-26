@@ -1,31 +1,56 @@
 package utils;
 
+import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.time.Duration;
 
 public class ElementUtils {
     private WebDriver driver;
+    private WebDriverWait wait;
 
     public ElementUtils(WebDriver driver) {
         this.driver = driver;
+        this.wait = new WebDriverWait(driver, Duration.ofSeconds(4));
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(2));
     }
 
     public void click(WebElement element) {
-        element.click();
+        try {
+            wait.until(ExpectedConditions.elementToBeClickable(element)).click();
+        } catch (TimeoutException e) {
+            throw new NoSuchElementException("El elemento no se ha vuelto clickeable: " + e.getMessage());
+        }
     }
 
     public void sendKeys(WebElement element, String text) {
-        element.sendKeys(text);
+        try {
+            WebElement webElement = wait.until(ExpectedConditions.visibilityOf(element));
+            webElement.clear();
+            webElement.sendKeys(text);
+        } catch (TimeoutException e) {
+            throw new NoSuchElementException("El elemento no es visible: " + e.getMessage());
+        }
     }
 
-    //visible present click
-    //anotacion que busque por cada tipo de locator
-    //enviar lista locators y interactuar con el primero
-    //si es visible o esta presente que escriba en el elemento
-    //un metodo padre que busque si el elemento este presente
-    //verificiar el texto
-    //espera hasta que el elemento sea clickeable
-    // metodo para manejar alertas https://the-internet.herokuapp.com/javascript_alerts ejemplo
-    // extent reporter
-
+    public WebElement findBy(By locator) {
+        WebElement element = null;
+        for (int i = 0; i < 3; i++) { // Intentar hasta 3 veces (incluyendo el primer intento)
+            try {
+                element = wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
+                break; // Si se encuentra el elemento, salir del bucle
+            } catch (TimeoutException e) {
+                System.out.println("Elemento no encontrado en el intento " + (i + 1));
+                if (i == 2) { // Si es el último intento, lanza una excepción
+                    throw new NoSuchElementException("Elemento no encontrado después de varios intentos: " + locator.toString());
+                }
+            }
+        }
+        return element;
+    }
 }
