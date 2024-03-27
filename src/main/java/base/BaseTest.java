@@ -8,6 +8,9 @@ import org.junit.BeforeClass;
 import org.openqa.selenium.WebDriver;
 
 import core.DriverManager;
+import utils.ElementUtils;
+
+import javax.swing.text.Element;
 
 
 public class BaseTest {
@@ -25,6 +28,7 @@ public class BaseTest {
     public void beforeMethod() {
         driver = DriverManager.getDriver();
         CustomPageFactory.initElements(driver,this);
+        ElementUtils.initialize(driver);
     }
 
     @After
