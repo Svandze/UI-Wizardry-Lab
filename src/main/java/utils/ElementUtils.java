@@ -1,16 +1,20 @@
 package utils;
 
 import lombok.extern.slf4j.Slf4j;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.Point;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
+import java.util.Set;
 
 @Slf4j
 public class ElementUtils {
@@ -18,7 +22,6 @@ public class ElementUtils {
     private static WebDriverWait wait;
     private static Actions action;
 
-    // Este método debe ser llamado una vez al inicializar la clase/utilidad
     public static void initialize(WebDriver webDriver) {
         driver = webDriver;
         wait = new WebDriverWait(driver, Duration.ofSeconds(3));
@@ -36,12 +39,25 @@ public class ElementUtils {
 
     public static void waitAndSendKeys(WebElement element, String text) {
         try {
-            WebElement webElement = wait.until(ExpectedConditions.visibilityOf(element));
-            webElement.clear();
-            webElement.sendKeys(text);
+            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+            wait.until(ExpectedConditions.elementToBeClickable(element));
+
+            wait.until((WebDriver d) -> {
+                Point initialLocation = element.getLocation();
+                try {
+                    Thread.sleep(200);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
+                Point finalLocation = element.getLocation();
+                return initialLocation.equals(finalLocation);
+            });
+
+            element.clear();
+            element.sendKeys(text);
         } catch (TimeoutException e) {
-            log.error("El elemento no es visible: " + e.getMessage());
-            throw new NoSuchElementException("El elemento no es visible: " + e.getMessage());
+            log.error("El elemento no es interactuable: " + e.getMessage());
+            throw new NoSuchElementException("El elemento no es interactuable: " + e.getMessage());
         }
     }
 
@@ -84,5 +100,29 @@ public class ElementUtils {
             log.error("El elemento no se ha vuelto presente para obtener su texto: " + e.getMessage());
             throw new NoSuchElementException("El elemento no se ha vuelto presente para obtener su texto: " + e.getMessage());
         }
+    }
+
+    public static void windowHandler(String targetWindowTitle) {
+        Set<String> windowHandles = driver.getWindowHandles();
+        boolean foundWindow = false;
+        for (String windowHandle : windowHandles) {
+            driver.switchTo().window(windowHandle);
+            if (driver.getTitle().equals(targetWindowTitle)) {
+                foundWindow = true;
+                break;
+            }
+        }
+        if (!foundWindow) {
+            throw new RuntimeException("No se encontró la ventana con el título: " + targetWindowTitle);
+        }
+    }
+
+    public static void clickWithJavaScript(WebElement element) {
+        JavascriptExecutor jsExecutor = (JavascriptExecutor) driver;
+        jsExecutor.executeScript("arguments[0].click();", element);
+    }
+
+    public static void ScrollToElement(WebElement element) {
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", element);
     }
 }
