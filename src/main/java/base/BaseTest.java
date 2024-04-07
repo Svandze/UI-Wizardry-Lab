@@ -1,5 +1,6 @@
 package base;
 
+import com.github.javafaker.Faker;
 import core.CustomPageFactory;
 import org.junit.After;
 import org.junit.AfterClass;

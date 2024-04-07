@@ -117,11 +117,22 @@ public class ElementUtils {
     }
 
     public static void clickWithJavaScript(WebElement element) {
+        implicitWait();
         JavascriptExecutor jsExecutor = (JavascriptExecutor) driver;
         jsExecutor.executeScript("arguments[0].click();", element);
     }
 
     public static void ScrollToElement(WebElement element) {
         ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", element);
+        implicitWait();
+    }
+
+    public static void implicitWait() {
+        long startTime = System.currentTimeMillis();
+        try {
+            new WebDriverWait(driver, Duration.ofSeconds(1)).until(webDriver -> System.currentTimeMillis() - startTime > 1000);
+        } catch (Exception e) {
+            log.error("Error durante la espera implícita", e);
+        }
     }
 }

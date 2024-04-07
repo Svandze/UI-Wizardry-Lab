@@ -45,6 +45,9 @@ public class DriverManager extends ConfigReader {
             } else if ("edge".equalsIgnoreCase(browser)) {
                 WebDriverManager.edgedriver().setup();
                 EdgeOptions options = new EdgeOptions();
+                options.addArguments("--no-sandbox");
+                options.addArguments("--disable-dev-shm-usage");
+                options.addArguments("--disable-gpu");
                 if (headlessMode) {
                     options.addArguments("--headless");
                 }
