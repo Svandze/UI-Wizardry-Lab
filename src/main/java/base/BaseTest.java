@@ -34,8 +34,6 @@ public class BaseTest {
 
     @After
     public void afterMethod() {
-        if (driver != null) {
-            driver.quit();
-        }
+        DriverManager.quitDriver();
     }
 }
