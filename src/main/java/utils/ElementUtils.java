@@ -122,7 +122,7 @@ public class ElementUtils {
         jsExecutor.executeScript("arguments[0].click();", element);
     }
 
-    public static void ScrollToElement(WebElement element) {
+    public static void scrollToElement(WebElement element) {
         ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", element);
         implicitWait();
     }
