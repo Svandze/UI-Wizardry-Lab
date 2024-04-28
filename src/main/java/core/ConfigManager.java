@@ -5,6 +5,10 @@ import lombok.extern.slf4j.Slf4j;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Comparator;
 
 @Slf4j
 public class ConfigManager {
@@ -21,7 +25,7 @@ public class ConfigManager {
             createDirectories(packageName);
             createClasses(packageName, classNames, classContents);
             createConfigFile();
-            generateLoginPageTest(packageName, "LoginPage", "src/test/java/" + packageName.replace(".", "/"));
+//            generateLoginPageTest(packageName, "LoginPage", "src/test/java/" + packageName.replace(".", "/"));
             log.info("Page Object Model structure generated successfully.");
         } catch (IOException e) {
             log.error("An error occurred while generating Page Object Model structure: " + e.getMessage());
@@ -70,23 +74,37 @@ public class ConfigManager {
         }
     }
 
-    private static void generateLoginPageTest(String packageName, String className, String path) throws IOException {
-        String testFilePath = path + "/" + className + "Test.java";
-        File testFile = new File(testFilePath);
-        if (testFile.createNewFile()) {
-            FileWriter writer = new FileWriter(testFilePath);
-            writer.write("package " + packageName + ";\n\n");
-            writer.write("import base.BaseTest;\n");
-            writer.write("import org.testng.annotations.Test;\n\n");
-            writer.write("public class " + className + "Test extends BaseTest {\n\n");
-            writer.write("\t@Test\n");
-            writer.write("\tpublic void " + className + "Test(){\n");
-            writer.write("\t\t// Implement your test logic here\n");
-            writer.write("\t\t// Example: driver.get(\"your_login_page_url\");\n");
-            writer.write("\t\t// Assert.assertTrue(yourAssertionCondition);\n");
-            writer.write("\t}\n");
-            writer.write("}\n");
-            writer.close();
+//    private static void generateLoginPageTest(String packageName, String className, String path) throws IOException {
+//        String testFilePath = path + "/" + className + "Test.java";
+//        File testFile = new File(testFilePath);
+//        if (testFile.createNewFile()) {
+//            FileWriter writer = new FileWriter(testFilePath);
+//            writer.write("package " + packageName + ";\n\n");
+//            writer.write("import base.BaseTest;\n");
+//            writer.write("import org.testng.annotations.Test;\n\n");
+//            writer.write("public class " + className + "Test extends BaseTest {\n\n");
+//            writer.write("\t@Test\n");
+//            writer.write("\tpublic void " + className + "Test(){\n");
+//            writer.write("\t\t// Implement your test logic here\n");
+//            writer.write("\t\t// Example: driver.get(\"your_login_page_url\");\n");
+//            writer.write("\t\t// Assert.assertTrue(yourAssertionCondition);\n");
+//            writer.write("\t}\n");
+//            writer.write("}\n");
+//            writer.close();
+//        }
+//    }
+
+    public static void deletePagesDirectory(String packageName) {
+        try {
+            Path directoryPath = Paths.get("src/test/java", packageName.replace(".", "/"));
+            Files.walk(directoryPath)
+                    .sorted(Comparator.reverseOrder())
+                    .map(Path::toFile)
+                    .forEach(File::delete);
+            log.info("Deleted the directory successfully: " + packageName);
+        } catch (IOException e) {
+            log.error("Failed to delete the directory: " + packageName + " - " + e.getMessage());
         }
     }
+
 }
