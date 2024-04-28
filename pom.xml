@@ -6,7 +6,7 @@
 
     <groupId>org.example</groupId>
     <artifactId>framework</artifactId>
-    <version>1.3.3</version>
+    <version>1.3.4+FixFormat</version>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
@@ -70,13 +70,6 @@
             <artifactId>junit</artifactId>
             <version>4.13.2</version>
             <scope>compile</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>io.qameta.allure</groupId>
-            <artifactId>allure-junit5</artifactId>
-            <version>2.17.0</version>
-            <scope>test</scope>
         </dependency>
 
         <dependency>

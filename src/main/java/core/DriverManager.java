@@ -29,40 +29,38 @@ public class DriverManager {
         boolean maximizeMode = Boolean.parseBoolean(getProperty("maximize.mode"));
 
         switch (browser.toLowerCase()) {
-            case "chrome":
+            case "chrome" -> {
                 WebDriverManager.chromedriver().setup();
                 ChromeOptions chromeOptions = new ChromeOptions();
                 if (headlessMode) {
                     chromeOptions.addArguments("--headless");
                 }
                 driver = new ChromeDriver(chromeOptions);
-                break;
-            case "firefox":
+            }
+            case "firefox" -> {
                 WebDriverManager.firefoxdriver().setup();
                 FirefoxOptions firefoxOptions = new FirefoxOptions();
                 if (headlessMode) {
                     firefoxOptions.addArguments("--headless");
                 }
                 driver = new FirefoxDriver(firefoxOptions);
-                break;
-            case "ie":
-            case "internet explorer":
+            }
+            case "ie", "internet explorer" -> {
                 WebDriverManager.iedriver().setup();
                 if (headlessMode) {
                     throw new UnsupportedOperationException("Internet Explorer does not support headless mode.");
                 }
                 driver = new InternetExplorerDriver(new InternetExplorerOptions());
-                break;
-            case "edge":
+            }
+            case "edge" -> {
                 WebDriverManager.edgedriver().setup();
                 EdgeOptions edgeOptions = new EdgeOptions();
                 if (headlessMode) {
                     edgeOptions.addArguments("--headless");
                 }
                 driver = new EdgeDriver(edgeOptions);
-                break;
-            default:
-                throw new IllegalArgumentException("Browser not supported: " + browser);
+            }
+            default -> throw new IllegalArgumentException("Browser not supported: " + browser);
         }
 
         if (maximizeMode) {
@@ -73,7 +71,7 @@ public class DriverManager {
     public static void quitDriver() {
         if (driver != null) {
             driver.quit();
-            driver = null; // Restablece el driver a null después de cerrarlo
+            driver = null;
         }
     }
 }

@@ -1,6 +1,5 @@
 package base;
 
-import com.github.javafaker.Faker;
 import core.CustomPageFactory;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -10,8 +9,6 @@ import org.openqa.selenium.WebDriver;
 
 import core.DriverManager;
 import utils.ElementUtils;
-
-import javax.swing.text.Element;
 
 
 public class BaseTest {
@@ -28,7 +25,7 @@ public class BaseTest {
     @Before
     public void beforeMethod() {
         driver = DriverManager.getDriver();
-        CustomPageFactory.initElements(driver,this);
+        CustomPageFactory.initElements(driver, this);
         ElementUtils.initialize(driver);
     }
 

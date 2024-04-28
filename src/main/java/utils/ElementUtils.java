@@ -130,7 +130,7 @@ public class ElementUtils {
     public static void implicitWait() {
         long startTime = System.currentTimeMillis();
         try {
-            new WebDriverWait(driver, Duration.ofSeconds(1)).until(webDriver -> System.currentTimeMillis() - startTime > 1000);
+            new WebDriverWait(driver, Duration.ofSeconds(10)).until(webDriver -> System.currentTimeMillis() - startTime > 1000);
         } catch (Exception e) {
             log.error("Error durante la espera implícita", e);
         }
