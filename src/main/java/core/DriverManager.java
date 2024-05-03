@@ -32,7 +32,10 @@ public class DriverManager {
             case "chrome" -> {
                 WebDriverManager.chromedriver().setup();
                 ChromeOptions chromeOptions = new ChromeOptions();
+                chromeOptions.addArguments("--lang=es-MX");
                 if (headlessMode) {
+                    chromeOptions.addArguments("window-size=2560,1440");
+                    chromeOptions.addArguments("--disable-gpu");
                     chromeOptions.addArguments("--headless");
                 }
                 driver = new ChromeDriver(chromeOptions);
@@ -41,6 +44,7 @@ public class DriverManager {
                 WebDriverManager.firefoxdriver().setup();
                 FirefoxOptions firefoxOptions = new FirefoxOptions();
                 if (headlessMode) {
+                    firefoxOptions.addArguments("window-size=2560,1440");
                     firefoxOptions.addArguments("--headless");
                 }
                 driver = new FirefoxDriver(firefoxOptions);
@@ -56,7 +60,7 @@ public class DriverManager {
                 WebDriverManager.edgedriver().setup();
                 EdgeOptions edgeOptions = new EdgeOptions();
                 if (headlessMode) {
-                    edgeOptions.addArguments("--headless");
+                    throw new UnsupportedOperationException("Edge does not support headless mode.");
                 }
                 driver = new EdgeDriver(edgeOptions);
             }
