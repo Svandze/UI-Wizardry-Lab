@@ -8,6 +8,14 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
 public @interface FindByList {
-    String[] value();
-}
+    Locator[] value();
 
+    enum LocatorType {
+        ID, NAME, CLASS_NAME, TAG_NAME, CSS, XPATH, LINK_TEXT, PARTIAL_LINK_TEXT
+    }
+
+    @interface Locator {
+        LocatorType type();
+        String value();
+    }
+}

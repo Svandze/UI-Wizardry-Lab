@@ -54,18 +54,32 @@ public class CustomPageFactory {
         @Override
         public Object decorate(ClassLoader loader, Field field) {
             if (field.isAnnotationPresent(FindByList.class)) {
-                FindByList findByList = field.getAnnotation(FindByList.class);
-                List<By> bys = new ArrayList<>();
-                for (String locator : findByList.value()) {
-                    bys.add(By.xpath(locator)); //Se está asumiendo que todo son Xpath, validar si se cambia por CSS
-                }
+                List<By> bys = constructBys(field.getAnnotation(FindByList.class));
                 ElementLocator locator = new CustomElementLocator(driver, bys);
                 if (WebElement.class.isAssignableFrom(field.getType())) {
                     return proxyForLocator(loader, locator);
+                } else if (List.class.isAssignableFrom(field.getType())) {
+                    return proxyForListLocator(loader, locator);
                 }
-                //TODO Agregar soporte para List<WebElement> si es necesario
             }
             return super.decorate(loader, field);
+        }
+
+        private List<By> constructBys(FindByList annotation) {
+            List<By> bys = new ArrayList<>();
+            for (FindByList.Locator locator : annotation.value()) {
+                switch (locator.type()) {
+                    case ID -> bys.add(By.id(locator.value()));
+                    case NAME -> bys.add(By.name(locator.value()));
+                    case CLASS_NAME -> bys.add(By.className(locator.value()));
+                    case CSS -> bys.add(By.cssSelector(locator.value()));
+                    case XPATH -> bys.add(By.xpath(locator.value()));
+                    case LINK_TEXT -> bys.add(By.linkText(locator.value()));
+                    case PARTIAL_LINK_TEXT -> bys.add(By.partialLinkText(locator.value()));
+                    case TAG_NAME -> bys.add(By.tagName(locator.value()));
+                }
+            }
+            return bys;
         }
     }
 }

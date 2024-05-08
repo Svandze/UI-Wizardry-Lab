@@ -1,10 +1,8 @@
 package base;
 
 import core.CustomPageFactory;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.openqa.selenium.WebDriver;
 
 import core.DriverManager;
@@ -14,22 +12,14 @@ import utils.ElementUtils;
 public class BaseTest {
     protected WebDriver driver;
 
-    @BeforeClass
-    public static void setUp() {
-    }
-
-    @AfterClass
-    public static void tearDown() {
-    }
-
-    @Before
+    @BeforeEach
     public void beforeMethod() {
         driver = DriverManager.getDriver();
         CustomPageFactory.initElements(driver, this);
         ElementUtils.initialize(driver);
     }
 
-    @After
+    @AfterEach
     public void afterMethod() {
         DriverManager.quitDriver();
     }
