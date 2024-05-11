@@ -16,6 +16,10 @@ import static core.ConfigReader.getProperty;
 public class DriverManager {
     private static WebDriver driver;
 
+    /**
+     * Retrieves the current WebDriver instance. If none exists, initializes a new driver.
+     * @return The WebDriver instance to interact with the browser.
+     */
     public static WebDriver getDriver() {
         if (driver == null) {
             initializeDriver();
@@ -23,8 +27,15 @@ public class DriverManager {
         return driver;
     }
 
+    /**
+     * Initializes the WebDriver based on the `browser` property or defaults to Chrome.
+     * Handles headless and maximized modes using properties in `config.properties`.
+     */
     private static void initializeDriver() {
         String browser = getProperty("browser");
+        if (browser == null || browser.isBlank()) {
+            browser = "chrome";
+        }
         boolean headlessMode = Boolean.parseBoolean(getProperty("headless.mode"));
         boolean maximizeMode = Boolean.parseBoolean(getProperty("maximize.mode"));
 
@@ -72,6 +83,9 @@ public class DriverManager {
         }
     }
 
+    /**
+     * Quits the WebDriver instance and sets it to null to release resources.
+     */
     public static void quitDriver() {
         if (driver != null) {
             driver.quit();
