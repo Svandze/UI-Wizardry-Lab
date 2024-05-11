@@ -32,8 +32,8 @@ public class ConfigReader {
             try (FileWriter writer = new FileWriter(configFile)) {
                 writer.write("# Default Configuration\n");
                 writer.write("browser=chrome\n");
-                writer.write("environment=production\n");
-                writer.write("timeout=30\n");
+                writer.write("headless.mode=true\n");
+                writer.write("maximize.mode=true\n");
                 log.info("Created default config.properties file");
             } catch (IOException e) {
                 e.printStackTrace();
