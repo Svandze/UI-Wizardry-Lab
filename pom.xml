@@ -6,7 +6,7 @@
 
     <groupId>co.com.enequipo.fw</groupId>
     <artifactId>enequipo</artifactId>
-    <version>2.0.3</version>
+    <version>1.0.0</version>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
@@ -66,13 +66,6 @@
 
         <dependency>
             <groupId>org.mockito</groupId>
-            <artifactId>mockito-junit-jupiter</artifactId>
-            <version>5.11.0</version>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.mockito</groupId>
             <artifactId>mockito-inline</artifactId>
             <version>5.2.0</version>
             <scope>test</scope>
@@ -90,7 +83,6 @@
             <version>5.10.2</version>
             <scope>compile</scope>
         </dependency>
-
 
     </dependencies>
     <distributionManagement>
