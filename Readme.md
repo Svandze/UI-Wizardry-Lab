@@ -215,3 +215,62 @@ public class SamplePage {
 La inclusión de esta anotación simplifica enormemente el trabajo al generar nuestros localizadores. Esta anotación
 prioriza la búsqueda por localizadores de tipo ID, luego Name, y así sucesivamente, priorizando los localizadores que
 son buscados de manera más eficiente por los navegadores.
+
+## ElementUtils
+
+Se han incluido métodos personalizados que incluyen acciones/esperas para manipular los elementos de las páginas de
+manera más robusta en el contexto de Selenium.
+Aquí describimos algunos de los métodos más útiles y cómo utilizarlos.
+
+### waitAndClick
+
+Espera hasta que un elemento sea clickeable y luego hace clic en él:
+
+```markdown
+WebElement button = driver.findElement(By.id("buttonId"));
+ElementUtils.waitAndClick(button);
+```
+
+### waitAndSendKeys
+
+Espera hasta que un elemento sea clickeable y luego envía texto al mismo:
+
+```markdown
+WebElement inputField = driver.findElement(By.id("inputId"));
+ElementUtils.waitAndSendKeys(inputField, "Texto a enviar");
+```
+
+### getElementText
+
+Obtiene el texto de un elemento una vez que esté presente:
+
+```markdown
+WebElement label = driver.findElement(By.id("labelId"));
+String text = ElementUtils.getElementText(label);
+```
+
+### clickWithJavaScript
+
+Hace clic en un elemento usando JavaScript:
+
+```markdown
+WebElement button = driver.findElement(By.id("buttonId"));
+ElementUtils.clickWithJavaScript(button);
+```
+
+### scrollToElement
+
+Desplaza la vista hasta un elemento:
+
+```markdown
+WebElement section = driver.findElement(By.id("sectionId"));
+ElementUtils.scrollToElement(section);
+```
+
+### windowHandler
+
+Cambia a una ventana específica basada en su título:
+
+```markdown
+ElementUtils.windowHandler("Título de la Ventana");
+```
